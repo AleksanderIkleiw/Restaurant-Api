@@ -2,17 +2,18 @@ from pydantic import BaseModel, Field
 from typing import Union
 
 
+class User(BaseModel):
+    username: str
+    password: str
+
+
 class Address(BaseModel):
     address: str
     address_line_2: Union[str, None] = None
     city: str
     postal_code: str
     phone_number: str
-
-
-class User(BaseModel):
-    username: str
-    password: str
+    user: User
 
 
 class Order(BaseModel):
