@@ -1,8 +1,12 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Union
 
 
 class User(BaseModel):
+    username: str
+
+
+class RegisterUser(BaseModel):
     username: str
     password: str
 
@@ -13,23 +17,21 @@ class Address(BaseModel):
     city: str
     postal_code: str
     phone_number: str
-    user: User
+    first_name: str
+    surname: str
 
 
 class Order(BaseModel):
-    status: str
-    firstname: str
-    lastname: str
-    address: Address
-    user: User
+    items: list[int]
 
 
 class Menu(BaseModel):
     title: str
     description: str
+    price: float
+    id: int
 
 
 class Token(BaseModel):
     access_token: str
     token_type: str
-
