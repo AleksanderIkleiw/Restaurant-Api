@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from models import User, Token
-from database import Authorization
+import database
 from hashing import hash_password
 from tokens import create_access_token
 from datetime import timedelta
@@ -46,7 +46,7 @@ async def validate_token_return_user(token: str = Depends(oauth2_scheme)):
     converts memory object retrieved from the database to bytes
     """
     try:
-        user = dict(Authorization().username_to_password(username))
+        user = dict(database.username_to_password(username))
     except KeyError:
         raise credentials_exception
 
@@ -58,7 +58,7 @@ async def validate_token_return_user(token: str = Depends(oauth2_scheme)):
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = User(username=form_data.username, password=form_data.password).dict()
     user.update({'password': hash_password(user['password'])})  # hashes user provided password
-    if Authorization().login(user):  # if user exists and provided proper password, creates token
+    if database.login(user):  # if user exists and provided proper password, creates token
         access_token = create_access_token(
             data={"username": user['username']},
             expires_delta=timedelta(seconds=Constants.access_token_lifetime_seconds.value,
@@ -75,15 +75,16 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 
 @app.post('/register/')
 async def register(form_data: User):
+    print(form_data)
     user = form_data.dict()
     user.update({'password': hash_password(user['password'])})
 
-    return Authorization().register(user)
+    return database.register(user)
 
 
-@app.get('/')
-async def test(user: User = Depends(validate_token_return_user)):
-    return 'pierogi'
+@app.get('/menu')
+async def menu(user: User = Depends(validate_token_return_user)):
+    return
 
 
 if __name__ == "__main__":
