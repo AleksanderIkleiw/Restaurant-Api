@@ -185,6 +185,6 @@ def inset_into_order_table(data_dict):
 if __name__ == '__main__':
     with DatabaseManager() as cursor:
         create_user_table(cursor)
+        create_address_table(cursor)
         create_menu_table(cursor)
         create_order_table(cursor)
-        create_address_table(cursor)
