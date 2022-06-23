@@ -28,3 +28,8 @@ class Menu(BaseModel):
     title: str
     description: str
 
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
