@@ -3,16 +3,6 @@
 The project provides API for login/register, creating orders and many more.
 
 
-
-## Deployment
-
-To deploy this project, run
-
-```bash
- npm run deploy
-```
-
-
 ## Deployment
 
 To deploy this project, create a .env file and set variables
